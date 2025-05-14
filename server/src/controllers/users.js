@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 export const register = async (req, res) => {
     try {
-        const { name, role, email, password } = req.body;
+        const { name, email, password } = req.body;
         
         // Check if user already exists
         const existingUser = await User.findOne({ email });
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
         // Create new user
         const user = new User({
             name,
-            role,
+            role: "student",
             email,
             password: hashedPassword
         });

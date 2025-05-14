@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const Login = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,23 +26,14 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
+    setSuccess(false);
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', formData);
-      
-      // Store the token in localStorage
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userId', response.data.user.id);
-      
-      // You can add navigation logic here
-      // For example, using react-router:
-      // navigate('/dashboard');
-      navigate('/home');
-      
-      console.log('Login successful:', response.data);
+      await axios.post('http://localhost:3000/auth/signup', formData);
+      setSuccess(true);
+      // Optionally, navigate to login or home after signup
+      setTimeout(() => navigate('/'), 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during login');
-      console.error('Login error:', err);
+      setError(err.response?.data?.message || 'An error occurred during signup');
     } finally {
       setLoading(false);
     }
@@ -49,9 +42,22 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>Welcome Back</h2>
+        <h2>Create Account</h2>
         {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">Signup successful! Redirecting to login...</div>}
         <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your name"
+              required
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -81,13 +87,16 @@ const Login = () => {
             className="login-button"
             disabled={loading}
           >
-            {loading ? 'Logging in...' : 'Log In'}
+            {loading ? 'Signing up...' : 'Sign Up'}
           </button>
-          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
         </form>
+        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+          Already have an account?{' '}
+          <span style={{ color: '#4a90e2', cursor: 'pointer' }} onClick={() => navigate('/')}>Log In</span>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default SignUp;
