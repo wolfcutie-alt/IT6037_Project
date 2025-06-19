@@ -6,20 +6,16 @@ const articleSchema = new Schema({
         required: true,
     },
     type: {
-        type: String,
-        required: true,
+        type: String
     },
     category: {
-        type: String,
-        required: true,
+        type: String
     },
     nationality: {
-        type: String,
-        required: true,
+        type: String
     },
     about: {
-        type: String,
-        required: true,
+        type: String
     },
     born: {
         type: String,

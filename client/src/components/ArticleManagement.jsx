@@ -48,7 +48,7 @@ const ArticleManagement = ({ userRole }) => {
     e.preventDefault();
     try {
       if (selectedArticle) {
-        await axios.put(`http://localhost:3000/articles/${selectedArticle.id}`, formData,
+        await axios.put(`http://localhost:3000/articles/${selectedArticle._id}`, formData,
           {
             headers: {
               'Authorization': `${token}`
@@ -56,7 +56,13 @@ const ArticleManagement = ({ userRole }) => {
           }
         );
       } else {
-        await axios.post('http://localhost:3000/articles', formData);
+        await axios.post(`http://localhost:3000/articles/`, formData,
+          {
+            headers: {
+              'Authorization': `${token}`
+            }
+          }
+        )
       }
       fetchArticles();
       resetForm();
