@@ -129,7 +129,10 @@ export default function ManagePage() {
                 <span className="text-sm font-medium">{user?.name}</span>
                 <Badge variant="secondary">{userRole}</Badge>
               </div>
-              <Button variant="outline" size="sm" onClick={logout}>
+              <Button variant="outline" size="sm" onClick={() => {
+                logout();
+                router.push("/login")
+              }}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Button>
